@@ -35,6 +35,13 @@ class IssuePriority
     protected $name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", name="priority_order")
+     */
+    protected $order;
+
+    /**
      * @var ArrayCollection|Issue[]
      *
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="priority")
@@ -44,7 +51,7 @@ class IssuePriority
     /**
      * @return array
      */
-    public static function getPriorities()
+    public static function getPrioritiesByOrder()
     {
         return [
             self::PRIORITY_TRIVIAL,
@@ -126,5 +133,29 @@ class IssuePriority
         $this->issues->removeElement($issue);
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }

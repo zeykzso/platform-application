@@ -55,8 +55,14 @@ class IssueResolution
         ];
     }
 
-    public function __construct()
+    /**
+     * IssueResolution constructor.
+     *
+     * @param string|null $name
+     */
+    public function __construct($name = null)
     {
+        $this->name = $name;
         $this->issues = new ArrayCollection();
     }
 
@@ -120,5 +126,13 @@ class IssueResolution
         $this->issues->removeElement($issue);
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }

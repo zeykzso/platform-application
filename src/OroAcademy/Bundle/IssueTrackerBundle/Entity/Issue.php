@@ -5,6 +5,8 @@ namespace OroAcademy\Bundle\IssueTrackerBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use OroAcademy\Bundle\IssueTrackerBundle\Model\ExtendIssue;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
@@ -16,6 +18,13 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
+ * @Config(
+ *      defaultValues={
+ *          "tag"={
+ *              "enabled"=true
+ *          }
+ *      }
+ * )
  */
 class Issue extends ExtendIssue
 {
@@ -124,6 +133,18 @@ class Issue extends ExtendIssue
     protected $updatedAt;
 
     /**
+     * @var ArrayCollection $tags
+     * @ConfigField(
+     *      defaultValues={
+     *          "merge"={
+     *              "display"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $tags;
+
+    /**
      * Issue constructor.
      */
     public function __construct()
@@ -184,8 +205,6 @@ class Issue extends ExtendIssue
     /**
      * @param \DateTime $updatedAt
      * @return $this
-     *
-     * @ORM\PreUpdate
      */
     public function setUpdatedAt(\DateTime $updatedAt = null)
     {
@@ -193,6 +212,14 @@ class Issue extends ExtendIssue
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function refreshUpdatedAt()
+    {
+        $this->setUpdatedAt();
     }
 
     /**
@@ -392,6 +419,29 @@ class Issue extends ExtendIssue
     public function removeChild(Issue $issue)
     {
         $this->children->removeElement($issue);
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTags()
+    {
+        if (null === $this->tags) {
+            $this->tags = new ArrayCollection();
+        }
+
+        return $this->tags;
+    }
+
+    /**
+     * @param $tags
+     * @return Issue
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
 
         return $this;
     }
