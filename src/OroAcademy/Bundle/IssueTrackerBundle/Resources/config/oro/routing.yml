@@ -1,0 +1,14 @@
+oro_academy_issue_tracker_issue:
+    resource: "@OroAcademyIssueTrackerBundle/Controller"
+    type: annotation
+    prefix: /issue-tracker
+
+oro_academy_issue_tracker_issue_api:
+    resource: "@OroAcademyIssueTrackerBundle/Controller/Api/Rest/IssueController.php"
+    type: rest
+    prefix: /issue-tracker/api/rest/{version}/
+    requirements:
+        version: latest|v1
+        _format: json
+    defaults:
+        version: latest

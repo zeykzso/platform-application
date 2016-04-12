@@ -1,0 +1,64 @@
+oro_academy:
+    menu:
+        issue_main: Issues
+        issue_index: All issues
+        issue_create: Create issue
+    entity:
+        issue:
+            label: Issue
+            view: View issue
+            code: Code
+            summary: Summary
+            description: Description
+            createdAt: Created at
+            updatedAt: Updated at
+            priority:
+                label: Priority
+            reporter:
+                full_name: Reporter
+            assignee:
+                full_name: Assignee
+            type:
+                label: Type
+            status:
+                label: Status
+            resolution:
+                label: Resolution
+        priority:
+            label: Priority
+        assignee:
+            label: Assignee
+    datagrid:
+        issue:
+            code: Code
+            summary: Summary
+            type:
+                name: Type
+            priority:
+                name: Priority
+            reporter:
+                full_name: Reporter
+            assigne:
+                full_name: Assignee
+            createdAt: Created at
+            updatedAt: Updated at
+# Statuses
+open: Open
+in_progress: In progress
+closed: Closed
+resolved: Resolved
+reopened: Reopened
+
+# Priorities
+trivial: Trivial
+minor: Minor
+major: Major
+critical: Critical
+blocker: Blocker
+
+# Resolutions
+fixed: Fixed
+dulicate: Dulicate
+incomplete: Incomplete
+cannot_reproduce: Cannot reproduce
+done: Done

@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use OroAcademy\Bundle\IssueTrackerBundle\Entity\Issue;
+use OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueStatus;
 use OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueType;
 
 class LoadIssues implements FixtureInterface, OrderedFixtureInterface
@@ -33,7 +34,7 @@ class LoadIssues implements FixtureInterface, OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 4;
+        return 5;
     }
 
     /**
@@ -47,6 +48,7 @@ class LoadIssues implements FixtureInterface, OrderedFixtureInterface
         $subTaskType = $manager->getRepository('OroAcademyIssueTrackerBundle:IssueType')
             ->findOneByName(IssueType::TYPE_SUB_TASK);
         $users = $manager->getRepository('OroUserBundle:User')->findAll();
+        $statuses = $manager->getRepository('OroAcademyIssueTrackerBundle:IssueStatus')->findAll();
 
         for ($i = 1; $i <= self::NR_OF_ISSUES; $i++) {
             $issue = new Issue();
@@ -54,7 +56,10 @@ class LoadIssues implements FixtureInterface, OrderedFixtureInterface
             $issue->setDescription($this->generateDescription());
             $issue->setType($types[array_rand($types)]);
             $issue->setPriority($priorities[array_rand($priorities)]);
-            $issue->setResolution($resolutions[array_rand($resolutions)]);
+            $issue->setStatus($statuses[array_rand($statuses)]);
+            if (in_array($issue->getStatus()->getName(), [IssueStatus::STATUS_RESOLVED, IssueStatus::STATUS_CLOSED])) {
+                $issue->setResolution($resolutions[array_rand($resolutions)]);
+            }
             $issue->setReporter($users[array_rand($users)]);
             $issue->setAssignee($users[array_rand($users)]);
 
@@ -67,6 +72,7 @@ class LoadIssues implements FixtureInterface, OrderedFixtureInterface
                     $subIssue->setType($subTaskType);
                     $subIssue->setPriority($priorities[array_rand($priorities)]);
                     $subIssue->setResolution($resolutions[array_rand($resolutions)]);
+                    $subIssue->setStatus($statuses[array_rand($statuses)]);
                     $subIssue->setReporter($issue->getReporter());
                     $subIssue->setAssignee($issue->getAssignee());
                     $subIssue->setParent($issue);

@@ -1,0 +1,83 @@
+datagrid:
+    issues-grid:
+        source:
+            acl_resource: oro_academy.issue_view
+            type: orm
+            query:
+                select:
+                    - i.id
+                    - i.code
+                    - i.summary
+                    - t.name as typeName
+                    - p.name as priorityName
+#                    - i.status.name
+                    - r.name
+                    - CONCAT(rp.firstName, CONCAT(' ', rp.lastName)) as reporterFullName
+                    - CONCAT(a.firstName, CONCAT(' ', a.lastName)) as assigneeFullName
+                    - i.createdAt
+                    - i.updatedAt
+                from:
+                    - { table: OroAcademyIssueTrackerBundle:Issue, alias: i}
+                join:
+                    left:
+                        - { join: i.type, alias: t}
+                        - { join: i.priority, alias: p}
+                        - { join: i.resolution, alias: r}
+                        - { join: i.reporter, alias: rp}
+                        - { join: i.assignee, alias: a}
+        columns:
+            code:
+                label: oro_academy.datagrid.issue.code
+            summary:
+                label: oro_academy.datagrid.issue.summary
+            typeName:
+                label: oro_academy.datagrid.issue.type.name
+            priorityName:
+                label: oro_academy.datagrid.issue.priority.name
+            reporterFullName:
+                label: oro_academy.datagrid.issue.reporter.full_name
+            assigneeFullName:
+                label: oro_academy.datagrid.issue.assigne.full_name
+            summary:
+                label: oro_academy.datagrid.issue.summary
+            createdAt:
+                frontend_type: date
+            updatedAt:
+                frontend_type: date
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_academy.issue_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oro_academy.issue_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oro_academy_api_delete_issue
+                params:
+                    - id
+        sorters:
+            columns:
+                code:
+                    data_name: i.code
+                priorityName:
+                    data_name: p.order
+                updatedAt:
+                    data_name: i.updatedAt
+                createdAt:
+                    data_name: i.createdAt
+            default:
+                updatedAt: DESC
+        actions:
+            view:
+                type: navigate
+                label: View
+                link: view_link
+                icon: eye-open
+                acl_resource: oro_academy.issue_view
+                rowAction: true

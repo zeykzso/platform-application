@@ -96,7 +96,7 @@ class Issue extends ExtendIssue
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $assignee;
 
@@ -143,6 +143,14 @@ class Issue extends ExtendIssue
      * )
      */
     protected $tags;
+
+    /**
+     * @var IssueStatus
+     *
+     * @ORM\ManyToOne(targetEntity="IssueStatus", inversedBy="issues")
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=false)
+     */
+    protected $status;
 
     /**
      * Issue constructor.
@@ -444,5 +452,21 @@ class Issue extends ExtendIssue
         $this->tags = $tags;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 }

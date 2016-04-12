@@ -1,0 +1,60 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('oro_academy.issue_update', { id: entity.id }),
+            'entity_label': 'oro_academy.entity.issue.label'|trans
+        }) }}
+    {% endif %}
+
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_academy_api_delete_issue', {'id': entity.id}),
+            'dataRedirect': path('oro_academy.issue_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-issue',
+            'dataId': entity.id,
+            'entity_label': 'oro_academy.entity.issue.label'|trans,
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('oro_academy.issue_index'),
+    'indexLabel': 'oro_academy.entity.issue.label'|trans,
+    'entityTitle': entity.code
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set data %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('oro_academy.entity.issue.summary'|trans, entity.summary) }}
+                    {{ UI.renderProperty('oro_academy.entity.issue.priority.label'|trans, entity.priority.name|trans) }}
+                    {{ UI.renderProperty('oro_academy.entity.issue.status.label'|trans, entity.status.name|trans) }}
+                    {{ UI.renderProperty('oro_academy.entity.issue.reporter.full_name'|trans, entity.reporter.fullName) }}
+                    {% if (entity.assignee is not null) %}
+                        {{ UI.renderProperty('oro_academy.entity.issue.assignee.full_name'|trans, entity.assignee.fullName) }}
+                    {% endif %}
+                    {% if entity.resolution is not null and entity.status.name in ['closed', 'resolved'] %}
+                        {{ UI.renderProperty('oro_academy.entity.issue.resolution.label'|trans, entity.resolution.name|trans) }}
+                    {% endif %}
+                    <hr/>
+                    {{ UI.renderProperty('oro_academy.entity.issue.description'|trans, entity.description) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set dataBlocks = [{'title': 'Data'|trans, 'class': 'active', 'subblocks': [{ 'data' : [data] }]}] %}
+
+    {% set id = 'vehicleView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}
