@@ -8,3 +8,8 @@ services:
         arguments:
             - OroAcademy\Bundle\IssueTrackerBundle\Entity\Issue
             - "@doctrine.orm.entity_manager"
+
+    oro_academy.subscriber.note:
+        class: OroAcademy\Bundle\IssueTrackerBundle\EventListener\AddNoteSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
