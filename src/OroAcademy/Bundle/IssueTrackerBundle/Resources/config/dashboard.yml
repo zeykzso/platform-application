@@ -1,0 +1,15 @@
+oro_dashboard_config:
+    widgets:
+        quick_launchpad:
+            items:
+                issues:
+                    label:      oro_academy.entity.issue.plural
+                    icon:       suitcase
+                    route:      oro_academy.issue_index
+                    acl:        oro_academy.issue_view
+                    position:   10
+        recent_issues:
+            label: oro_academy.dashboard.recent_issues.title
+            route: oro_dashboard_widget
+            route_parameters: { bundle: OroAcademyIssueTrackerBundle, name: recentIssues }
+            acl: oro_academy.issue_view

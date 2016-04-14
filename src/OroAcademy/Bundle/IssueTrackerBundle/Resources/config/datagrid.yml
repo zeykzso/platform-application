@@ -1,4 +1,43 @@
 datagrid:
+    dashboard-recent-issues-grid:
+        source:
+            type: orm
+            acl_resource: oro_academy.issue_view
+            query:
+                select:
+                    - i.code as code
+                    - i.summary as summary
+                    - i.updatedAt
+                from:
+                    - { table: OroAcademyIssueTrackerBundle:Issue, alias: i }
+                join:
+                    inner:
+                        - { join: i.reporter, alias: reporter }
+                where:
+                    and:
+                        - reporter.id = @oro_security.security_facade->getLoggedUserId
+        columns:
+            code:
+                label: oro_academy.datagrid.issue.code
+            summary:
+                label: oro_academy.datagrid.issue.summary
+            updatedAt:
+                label: oro_academy.datagrid.issue.updated_at
+                frontend_type: datetime
+        sorters:
+            columns:
+                updatedAt:
+                    data_name: i.updatedAt
+            default:
+                updatedAt: DESC
+        options:
+            show_step_in_grid: false
+            entityHint: i
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
     issues-grid:
         source:
             acl_resource: oro_academy.issue_view
@@ -10,7 +49,7 @@ datagrid:
                     - i.summary
                     - t.name as typeName
                     - p.name as priorityName
-#                    - i.status.name
+                    - s.name as statusName
                     - r.name
                     - CONCAT(rp.firstName, CONCAT(' ', rp.lastName)) as reporterFullName
                     - CONCAT(a.firstName, CONCAT(' ', a.lastName)) as assigneeFullName
@@ -25,6 +64,7 @@ datagrid:
                         - { join: i.resolution, alias: r}
                         - { join: i.reporter, alias: rp}
                         - { join: i.assignee, alias: a}
+                        - { join: i.status, alias: s}
         columns:
             code:
                 label: oro_academy.datagrid.issue.code
@@ -32,6 +72,8 @@ datagrid:
                 label: oro_academy.datagrid.issue.summary
             typeName:
                 label: oro_academy.datagrid.issue.type.name
+            statusName:
+                label: oro_academy.datagrid.issue.status.name
             priorityName:
                 label: oro_academy.datagrid.issue.priority.name
             reporterFullName:
@@ -41,9 +83,9 @@ datagrid:
             summary:
                 label: oro_academy.datagrid.issue.summary
             createdAt:
-                frontend_type: date
+                frontend_type: datetime
             updatedAt:
-                frontend_type: date
+                frontend_type: datetime
         properties:
             id: ~
             update_link:
@@ -67,6 +109,8 @@ datagrid:
                     data_name: i.code
                 priorityName:
                     data_name: p.order
+                statusName:
+                    data_name: s.order
                 updatedAt:
                     data_name: i.updatedAt
                 createdAt:

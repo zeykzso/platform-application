@@ -39,19 +39,11 @@ workflows:
             resolution:
                 label: 'Resolution'
                 property_path: issue.resolution
-#                type: entity
-#                options:
-#                    class: OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueResolution
         transitions:
             start_progress:
                 label: "Start progress"
                 step_to: in_progress
                 transition_definition: start_progress_definition
-#                form_options:
-#                    attribute_fields:
-#                        status_name:
-#                            options:
-#                                required: true
             resolve:
                 label: "Resolve"
                 step_to: resolved
@@ -122,10 +114,3 @@ workflows:
                         where:
                             name: 'reopened'
                         attribute: $issue.status
-
-
-#Open: Start Progress -> In progress, Resolve -> Resolved, Close -> Closed
-#In progress: Stop Progress -> Open, Resolve -> Resolved, Close -> Closed
-#Closed: Reopen -> Reopened
-#Resolved: Close -> Closed, Repoen -> Reopened
-#Reopened: Start Progress -> In progress

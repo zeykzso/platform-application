@@ -1,0 +1,19 @@
+{% extends 'OroDashboardBundle:Dashboard:widget.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+    {{ dataGrid.renderGrid('dashboard-recent-issues-grid') }}
+        <script type="text/javascript">
+        require(['orocrm/call/info-opener']);
+    </script>
+{% endblock %}
+
+{% block actions %}
+    {% set actions = [{
+    'url': path('oro_academy.issue_index'),
+    'type': 'link',
+    'label': 'oro_academy.dashboard.recent_issues.view_all'|trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}
