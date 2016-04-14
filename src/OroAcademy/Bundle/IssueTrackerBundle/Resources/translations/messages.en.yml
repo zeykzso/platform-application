@@ -6,6 +6,7 @@ oro_academy:
     entity:
         issue:
             label: Issue
+            plural: Issues
             view: View issue
             code: Code
             summary: Summary
@@ -28,6 +29,9 @@ oro_academy:
             label: Priority
         assignee:
             label: Assignee
+        status:
+            resolve: Resolve
+            reopen: Reopen
     datagrid:
         issue:
             code: Code
@@ -40,8 +44,14 @@ oro_academy:
                 full_name: Reporter
             assigne:
                 full_name: Assignee
-            createdAt: Created at
-            updatedAt: Updated at
+            status:
+                name: Status
+            created_at: Created at
+            updated_at: Updated at
+    dashboard:
+        recent_issues:
+            view_all: View all
+            title: Recent issues
 # Statuses
 open: Open
 in_progress: In progress
@@ -62,3 +72,9 @@ dulicate: Dulicate
 incomplete: Incomplete
 cannot_reproduce: Cannot reproduce
 done: Done
+
+# Issue types
+sub_task: Subtask
+bug: Bug
+story: Story
+task: Task

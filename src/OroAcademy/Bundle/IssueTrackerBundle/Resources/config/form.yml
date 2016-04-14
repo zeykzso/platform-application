@@ -1,5 +1,7 @@
 parameters:
     oro_academy.form.handler.issue.class: OroAcademy\Bundle\IssueTrackerBundle\Form\Handler\IssueHandler
+    oro_academy.form.type.issue.api.class: OroAcademy\Bundle\IssueTrackerBundle\Form\Type\IssueApiType
+
 services:
     oro_academy.form.issue:
         class: Symfony\Component\Form\Form
@@ -19,3 +21,12 @@ services:
         class: OroAcademy\Bundle\IssueTrackerBundle\Form\Type\IssueType
         tags:
             - { name: form.type, alias: oro_academy_issue }
+
+    oro_academy.form.type.issue.api:
+        class: %oro_academy.form.type.issue.api.class%
+        arguments:
+            - @router
+            - @oro_locale.formatter.name
+            - @oro_security.security_facade
+        tags:
+            - { name: form.type, alias: oro_academy_issue_api }

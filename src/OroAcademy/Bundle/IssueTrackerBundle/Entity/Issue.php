@@ -22,6 +22,10 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      defaultValues={
  *          "tag"={
  *              "enabled"=true
+ *          },
+ *          "workflow"={
+ *              "active_workflow"="issue_status_workflow",
+ *              "show_step_in_grid"=false
  *          }
  *      }
  * )
