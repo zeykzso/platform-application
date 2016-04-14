@@ -10,7 +10,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="OroAcademy\Bundle\IssueTrackerBundle\Repository\IssueRepository")
  * @ORM\Table(
  *      name="oroacademy_issues",
  *      indexes={

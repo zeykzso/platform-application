@@ -13,3 +13,8 @@ oro_dashboard_config:
             route: oro_dashboard_widget
             route_parameters: { bundle: OroAcademyIssueTrackerBundle, name: recentIssues }
             acl: oro_academy.issue_view
+        issues_by_status:
+            label: oro_academy.dashboard.issues_by_status.label
+            route: oro_academy.dashboard.issues_by_status
+            acl: oro_academy.issue_view
+            description: oro_academy.dashboard.issues_by_status.description

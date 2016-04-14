@@ -52,6 +52,13 @@ oro_academy:
         recent_issues:
             view_all: View all
             title: Recent issues
+        issues_by_status:
+            label: Issues by status
+            description: Number of issues per status
+            status:
+                label: Statuses
+            number_of_issues:
+                label: Number of issues
 # Statuses
 open: Open
 in_progress: In progress
