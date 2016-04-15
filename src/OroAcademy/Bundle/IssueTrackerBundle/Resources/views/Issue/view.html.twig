@@ -19,6 +19,38 @@
             'entity_label': 'oro_academy.entity.issue.label'|trans,
         }) }}
     {% endif %}
+
+    {% if entity.type.name == 'story' %}
+        {# Subtasks dropdown #}
+        {% if entity.children|length > 0 %}
+            {% set childrenElements = [] %}
+            {% for subtask in entity.children %}
+                {% set buttonItem = {'label': subtask.code, 'path': path('oro_academy.issue_view', {'id': subtask.id})} %}
+                {% set childrenElements = childrenElements|merge([buttonItem]) %}
+            {% endfor %}
+            {{ UI.dropdownButton({
+                'label': 'oro_academy.button.issue.subtasks'|trans,
+                'elements': childrenElements,
+                'class': ''
+            }) }}
+        {% endif %}
+        {# add subtask button #}
+        {{ UI.button({
+            'path': path('oro_academy.issue_create', {'parent': entity.id}),
+            'label': 'oro_academy.button.issue.add_subtask'|trans,
+            'aCss': 'btn-primary'
+        }) }}
+    {% endif %}
+
+    {# Parent button #}
+    {% if entity.parent and entity.type.name == 'sub_task' %}
+        {{ UI.button({
+            'path': path('oro_academy.issue_view', {'id': entity.parent.id}),
+            'label': 'oro_academy.button.issue.view_story'|trans,
+            'aCss': 'btn-primary'
+        }
+        ) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -40,14 +72,35 @@
                     {{ UI.renderProperty('oro_academy.entity.issue.priority.label'|trans, entity.priority.name|trans) }}
                     {{ UI.renderProperty('oro_academy.entity.issue.status.label'|trans, entity.status.name|trans) }}
                     {{ UI.renderProperty('oro_academy.entity.issue.reporter.full_name'|trans, entity.reporter.fullName) }}
+                    {{ UI.renderProperty('oro_academy.entity.issue.type.label'|trans, entity.type.name|trans) }}
                     {% if (entity.assignee is not null) %}
                         {{ UI.renderProperty('oro_academy.entity.issue.assignee.full_name'|trans, entity.assignee.fullName) }}
                     {% endif %}
                     {% if entity.resolution is not null and entity.status.name in ['closed', 'resolved'] %}
                         {{ UI.renderProperty('oro_academy.entity.issue.resolution.label'|trans, entity.resolution.name|trans) }}
                     {% endif %}
+                    {{ UI.renderProperty('oro_academy.entity.issue.createdAt'|trans, entity.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('oro_academy.entity.issue.updatedAt'|trans, entity.updatedAt|oro_format_datetime) }}
                     <hr/>
+
                     {{ UI.renderProperty('oro_academy.entity.issue.description'|trans, entity.description) }}
+                    {% if entity.type.name == 'story' and entity.children|length > 0 %}
+                        <hr/>
+                        <div class="control-group">
+                            {{ UI.renderProperty('oro_academy.entity.issue.number_of_subtasks'|trans, entity.children|length) }}
+                            {% for subtask in entity.children %}
+                                {% set link %}
+                                    {{ UI.link({
+                                        'path': path('oro_academy.issue_view', {id: subtask.id}),
+                                        'label': subtask.summary
+                                    }) }}
+                                {% endset %}
+                                {{ UI.renderHtmlProperty(subtask.code, link) }}
+                                <br/>
+                            {% endfor %}
+                        </div>
+                        <hr/>
+                    {% endif %}
                 </div>
             </div>
         </div>

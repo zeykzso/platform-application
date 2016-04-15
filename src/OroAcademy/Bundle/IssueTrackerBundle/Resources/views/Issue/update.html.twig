@@ -43,21 +43,13 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set formData = [form_row(form)] %}
+
     {% set id = 'issue-edit' %}
     {% set dataBlocks = [{
     'title': 'General'|trans,
     'class': 'active',
-    'subblocks': [{
-    'title': '',
-    'data': [
-    form_row(form.summary),
-    form_row(form.description),
-    form_row(form.priority),
-    form_row(form.type),
-    form_row(form.assignee),
-    form_row(form.tags)
-    ]
-    }]
+    'subblocks': [{'title': '','data': formData}]
     }] %}
     {% set data = {
     'formErrors': form_errors(form)? form_errors(form) : null,

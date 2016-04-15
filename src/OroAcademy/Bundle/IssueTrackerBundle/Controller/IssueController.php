@@ -3,6 +3,7 @@
 namespace OroAcademy\Bundle\IssueTrackerBundle\Controller;
 
 use OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueStatus;
+use OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -45,11 +46,25 @@ class IssueController extends Controller
      * @Template("OroAcademyIssueTrackerBundle:Issue:update.html.twig")
      * @TitleTemplate("Issue - create")
      * @param Request $request
+     * @throws \Exception
      * @return array|RedirectResponse
      */
     public function createAction(Request $request)
     {
-        return $this->update(new Issue(), $request);
+        $issue = new Issue();
+        if ($parentId = $request->query->get('parent')) {
+            $em = $this->get('doctrine.orm.entity_manager');
+            $parentIssue = $em->getRepository('OroAcademyIssueTrackerBundle:Issue')
+                ->find($parentId);
+            if (!$parentIssue || $parentIssue->getType()->getName() != IssueType::TYPE_STORY) {
+                throw new \Exception(sprintf('Invalid parent id provided for subtask', $parentId));
+            }
+            $issue->setParent($parentIssue);
+            $issue->setType(
+                $em->getRepository('OroAcademyIssueTrackerBundle:IssueType')->findOneByName(IssueType::TYPE_SUB_TASK)
+            );
+        }
+        return $this->update($issue, $request);
     }
 
     /**

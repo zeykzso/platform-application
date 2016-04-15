@@ -16,12 +16,6 @@ class IssueType extends AbstractType
         $builder
             ->add('summary')
             ->add('description')
-            ->add('type', 'translatable_entity', [
-                'label' => 'oro_academy.entity.issue.type.label',
-                'class' => 'OroAcademyIssueTrackerBundle:IssueType',
-                'property' => 'name',
-                'required' => true
-            ])
             ->add('priority', 'translatable_entity', [
                 'label' => 'oro_academy.entity.issue.priority.label',
                 'class' => 'OroAcademyIssueTrackerBundle:IssuePriority',
@@ -39,6 +33,16 @@ class IssueType extends AbstractType
                     'label' => 'oro.tag.entity_plural_label'
                 )
             );
+
+        $issue = $options['data'];
+        if (!$issue->getParent()) {
+            $builder->add('type', 'translatable_entity', [
+                'label' => 'oro_academy.entity.issue.type.label',
+                'class' => 'OroAcademyIssueTrackerBundle:IssueType',
+                'property' => 'name',
+                'required' => true
+            ]);
+        }
     }
 
     /**

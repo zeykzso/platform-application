@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zeykzso
- * Date: 12/04/16
- * Time: 17:06
- */
 
 namespace OroAcademy\Bundle\IssueTrackerBundle\Migrations\Schema\v1_0;
 

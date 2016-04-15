@@ -3,6 +3,11 @@ oro_academy:
         issue_main: Issues
         issue_index: All issues
         issue_create: Create issue
+    button:
+        issue:
+            subtasks: Subtasks
+            view_story: View parent story
+            add_subtask: Add subtask
     entity:
         issue:
             label: Issue
@@ -25,6 +30,7 @@ oro_academy:
                 label: Status
             resolution:
                 label: Resolution
+            number_of_subtasks: Number of subtasks
         priority:
             label: Priority
         assignee:
