@@ -1,0 +1,24 @@
+{#
+    Available variables:
+    * entity       - user entity Oro\Bundle\TagBundle\Entity\Tag
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set showImage = false %}
+
+{% if entity %}
+    {% set recordUrl = indexer_item.recordUrl %}
+{% endif %}
+
+{% set title = entity.summary|default('N/A')%}
+{% set entityType = oro_entity_config_value(indexer_item.entityName, 'label')|trans %}
+
+{% set entityInfo = [
+{'title': 'oro.ui.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'},
+{'title': 'oro.ui.updated_at'|trans, 'value': entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'},
+{'title': 'oro_academy.entity.issue.code'|trans, 'value': entity.code},
+{'title': 'oro_academy.entity.issue.status.label'|trans, 'value': entity.status ? entity.status.name : 'N/A'},
+{'title': 'oro_academy.entity.issue.priority.label'|trans, 'value': entity.priority ? entity.priority.name : 'N/A'},
+{'title': 'oro_academy.entity.issue.resolution.label'|trans, 'value': entity.resolution ? entity.resolution.name : 'N/A'},
+] %}

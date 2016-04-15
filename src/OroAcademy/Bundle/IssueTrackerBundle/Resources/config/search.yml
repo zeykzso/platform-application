@@ -1,0 +1,68 @@
+OroAcademy\Bundle\IssueTrackerBundle\Entity\Issue:
+    alias: oro_academy_issue
+    label: oro_academy.entity.issue.label
+    title_fields: [code]
+    search_template: OroAcademyIssueTrackerBundle:Search:result.html.twig
+    fields:
+        -
+            name: code
+            target_type: text
+        -
+            name: summary
+            target_type: text
+        -
+            name: type
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [type]
+        -
+            name: priority
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [priority]
+        -
+            name: status
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [status]
+        -
+            name: resolution
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [resolution]
+        -
+            name: reporter
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: username
+                    target_type: text
+                    target_fields: [reporter_username]
+                -
+                    name: email
+                    target_type: text
+                    target_fields: [reporter_email]
+        -
+            name: assignee
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name: username
+                    target_type: text
+                    target_fields: [assignee_username]
+                -
+                    name: email
+                    target_type: text
+                    target_fields: [assignee_email]
