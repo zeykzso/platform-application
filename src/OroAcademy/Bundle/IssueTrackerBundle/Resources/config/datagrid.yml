@@ -50,7 +50,7 @@ datagrid:
                     - t.name as typeName
                     - p.name as priorityName
                     - s.name as statusName
-                    - r.name
+                    - r.name as resolutionName
                     - CONCAT(rp.firstName, CONCAT(' ', rp.lastName)) as reporterFullName
                     - CONCAT(a.firstName, CONCAT(' ', a.lastName)) as assigneeFullName
                     - i.createdAt
@@ -72,10 +72,12 @@ datagrid:
                 label: oro_academy.datagrid.issue.summary
             typeName:
                 label: oro_academy.datagrid.issue.type.name
-            statusName:
-                label: oro_academy.datagrid.issue.status.name
             priorityName:
                 label: oro_academy.datagrid.issue.priority.name
+            statusName:
+                label: oro_academy.datagrid.issue.status.name
+            resolutionName:
+                label: oro_academy.datagrid.issue.resolution.name
             reporterFullName:
                 label: oro_academy.datagrid.issue.reporter.full_name
             assigneeFullName:

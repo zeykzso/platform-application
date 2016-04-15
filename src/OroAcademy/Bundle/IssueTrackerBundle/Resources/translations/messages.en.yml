@@ -46,6 +46,8 @@ oro_academy:
                 full_name: Assignee
             status:
                 name: Status
+            resolution:
+                name: Resolution
             created_at: Created at
             updated_at: Updated at
     dashboard:
