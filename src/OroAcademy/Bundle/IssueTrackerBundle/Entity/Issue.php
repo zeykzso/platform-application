@@ -104,8 +104,17 @@ class Issue extends ExtendIssue
      */
     protected $assignee;
 
+    /**
+     * @var User[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinTable(
+     *     name="issues_collaborators",
+     *     joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     * )
+     */
     protected $collaborators;
-    protected $notes;
 
     /**
      * @var Issue
@@ -166,6 +175,7 @@ class Issue extends ExtendIssue
         $this->setUpdatedAt();
         $this->generateCode();
         $this->children = new ArrayCollection();
+        $this->collaborators = new ArrayCollection();
     }
 
     /**
@@ -360,9 +370,10 @@ class Issue extends ExtendIssue
      * @param User $reporter
      * @return $this
      */
-    public function setReporter($reporter)
+    public function setReporter(User $reporter = null)
     {
         $this->reporter = $reporter;
+        $this->addCollaborator($reporter);
 
         return $this;
     }
@@ -379,9 +390,10 @@ class Issue extends ExtendIssue
      * @param User $assignee
      * @return $this
      */
-    public function setAssignee($assignee)
+    public function setAssignee(User $assignee = null)
     {
         $this->assignee = $assignee;
+        $this->addCollaborator($assignee);
 
         return $this;
     }
@@ -472,5 +484,48 @@ class Issue extends ExtendIssue
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getCollaborators()
+    {
+        return $this->collaborators;
+    }
+
+    /**
+     * @param User[] $collaborators
+     * @return $this
+     */
+    public function setCollaborators($collaborators)
+    {
+        $this->collaborators = $collaborators;
+
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function addCollaborator(User $user)
+    {
+        if (!$this->collaborators->contains($user)) {
+            $this->collaborators->add($user);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function removeCollaborator(User $user)
+    {
+        $this->collaborators->removeElement($user);
+
+        return $this;
     }
 }

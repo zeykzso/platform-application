@@ -81,6 +81,19 @@
                     {% endif %}
                     {{ UI.renderProperty('oro_academy.entity.issue.createdAt'|trans, entity.createdAt|oro_format_datetime) }}
                     {{ UI.renderProperty('oro_academy.entity.issue.updatedAt'|trans, entity.updatedAt|oro_format_datetime) }}
+                    {% if entity.collaborators|length > 0 %}
+
+                        <div class="control-group">
+                            <label class="control-label">Collaborators</label>
+
+                            <div class="controls">
+                            {% for collaborator in entity.collaborators %}
+                                <div class="control-label">{{collaborator.fullname}} - {{ collaborator.email }}</div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
                     <hr/>
 
                     {{ UI.renderProperty('oro_academy.entity.issue.description'|trans, entity.description) }}

@@ -1,0 +1,19 @@
+definitions:
+    issue_add_note:
+        label: oro_academy.process.issue_collaborators
+        enabled: true
+        order: 50
+        entity: Oro\Bundle\NoteBundle\Entity\Note
+        actions_configuration:
+            - @call_method:
+                flush: true
+                parameters:
+                    object: $target
+                    method: addCollaborator
+                    method_parameters: [$owner]
+triggers:
+    issue_add_note:
+        -
+            event: create
+        -
+            event: update

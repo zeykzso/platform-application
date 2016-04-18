@@ -43,7 +43,7 @@ class IssueStatus
     /**
      * @var ArrayCollection|Issue[]
      *
-     * @ORM\OneToMany(targetEntity="Issue", mappedBy="type")
+     * @ORM\OneToMany(targetEntity="Issue", mappedBy="status")
      */
     protected $issues;
 
