@@ -32,6 +32,7 @@ oro_academy:
                 label: Resolution
             number_of_subtasks: Number of subtasks
             collaborators: Collaborators
+            issues_where_collaborator: Issues where user is collaborator
         priority:
             label: Priority
         assignee:

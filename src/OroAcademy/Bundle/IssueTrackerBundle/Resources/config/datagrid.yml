@@ -13,9 +13,11 @@ datagrid:
                 join:
                     inner:
                         - { join: i.reporter, alias: reporter }
+                        - { join: i.assignee, alias: assignee }
                 where:
-                    and:
+                    or:
                         - reporter.id = @oro_security.security_facade->getLoggedUserId
+                        - assignee.id = @oro_security.security_facade->getLoggedUserId
         columns:
             code:
                 label: oro_academy.datagrid.issue.code
