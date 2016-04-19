@@ -10,4 +10,10 @@
             }) }}
         </div>
     {% endif %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        entity_class: entity_class,
+        exportProcessor: 'oro_academy_issue_export',
+        importProcessor: 'oro_academy_issue_import',
+        dataGridName: gridName
+    } %}
 {% endblock %}

@@ -20,7 +20,7 @@
         }) }}
     {% endif %}
 
-    {% if entity.type.name == 'story' %}
+    {% if entity.type and entity.type.name == 'story' %}
         {# Subtasks dropdown #}
         {% if entity.children|length > 0 %}
             {% set childrenElements = [] %}
@@ -69,10 +69,14 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('oro_academy.entity.issue.summary'|trans, entity.summary) }}
-                    {{ UI.renderProperty('oro_academy.entity.issue.priority.label'|trans, entity.priority.name|trans) }}
+                    {% if entity.priority %}
+                        {{ UI.renderProperty('oro_academy.entity.issue.priority.label'|trans, entity.priority.name|trans) }}
+                    {% endif %}
                     {{ UI.renderProperty('oro_academy.entity.issue.status.label'|trans, entity.status.name|trans) }}
                     {{ UI.renderProperty('oro_academy.entity.issue.reporter.full_name'|trans, entity.reporter.fullName) }}
-                    {{ UI.renderProperty('oro_academy.entity.issue.type.label'|trans, entity.type.name|trans) }}
+                    {% if entity.type %}
+                        {{ UI.renderProperty('oro_academy.entity.issue.type.label'|trans, entity.type.name|trans) }}
+                    {% endif %}
                     {% if (entity.assignee is not null) %}
                         {{ UI.renderProperty('oro_academy.entity.issue.assignee.full_name'|trans, entity.assignee.fullName) }}
                     {% endif %}
@@ -82,7 +86,6 @@
                     {{ UI.renderProperty('oro_academy.entity.issue.createdAt'|trans, entity.createdAt|oro_format_datetime) }}
                     {{ UI.renderProperty('oro_academy.entity.issue.updatedAt'|trans, entity.updatedAt|oro_format_datetime) }}
                     {% if entity.collaborators|length > 0 %}
-
                         <div class="control-group">
                             <label class="control-label">Collaborators</label>
 
@@ -97,7 +100,7 @@
                     <hr/>
 
                     {{ UI.renderProperty('oro_academy.entity.issue.description'|trans, entity.description) }}
-                    {% if entity.type.name == 'story' and entity.children|length > 0 %}
+                    {% if entity.type and entity.type.name == 'story' and entity.children|length > 0 %}
                         <hr/>
                         <div class="control-group">
                             {{ UI.renderProperty('oro_academy.entity.issue.number_of_subtasks'|trans, entity.children|length) }}

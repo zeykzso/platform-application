@@ -4,11 +4,14 @@ namespace OroAcademy\Bundle\IssueTrackerBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="oroacademy_issue_priorities")
  * @ORM\HasLifecycleCallbacks()
+ * @Config()
  */
 class IssuePriority
 {
@@ -24,6 +27,13 @@ class IssuePriority
      * @ORM\Id
      * @ORM\Column(type="integer", name="id")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $id;
 

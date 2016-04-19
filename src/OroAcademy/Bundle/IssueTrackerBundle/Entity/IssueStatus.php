@@ -4,10 +4,13 @@ namespace OroAcademy\Bundle\IssueTrackerBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="oroacademy_issue_statuses")
+ * @Config()
  */
 class IssueStatus
 {
@@ -23,6 +26,13 @@ class IssueStatus
      * @ORM\Id
      * @ORM\Column(type="integer", name="id")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ConfigField(
+     *     defaultValues={
+     *         "importexport"={
+     *              "identity"=true
+     *         }
+     *     }
+     * )
      */
     protected $id;
 

@@ -1,0 +1,31 @@
+services:
+    oro_academy.importexport.normalizer.issue:
+        class: OroAcademy\Bundle\IssueTrackerBundle\ImportExport\Serializer\Normalizer\IssueNormalizer
+        parent: oro_importexport.serializer.configurable_entity_normalizer
+        tags:
+            - { name: oro_importexport.normalizer }
+
+    oro_academy.importexport.issue_data_converter:
+        parent: oro_importexport.data_converter.configurable
+
+    oro_academy.importexport.processor.export_issue:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [ setDataConverter, ["@oro_academy.importexport.issue_data_converter"]]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: "%oro_academy.issue.entity.class%", alias: oro_academy_issue_export }
+
+    oro_academy.importexport.strategy.add_or_replace:
+        class: OroAcademy\Bundle\IssueTrackerBundle\ImportExport\Strategy\IssueAddOrReplaceStrategy
+        parent: oro_importexport.strategy.configurable_add_or_replace
+        calls:
+            - [setEm, ["@doctrine.orm.entity_manager"]]
+
+    oro_academy.importexport.processor.import.add_or_replace:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+            - [setDataConverter, ['@oro_academy.importexport.issue_data_converter']]
+            - [setStrategy, ['@oro_academy.importexport.strategy.add_or_replace']]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: '%oro_academy.issue.entity.class%', alias: oro_academy_issue_import }
+            - { name: oro_importexport.processor, type: import_validation, entity: '%oro_academy.issue.entity.class%', alias: oro_academy_issue_import }
