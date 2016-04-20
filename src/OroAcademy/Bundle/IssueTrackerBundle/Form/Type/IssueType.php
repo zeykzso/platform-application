@@ -2,11 +2,13 @@
 
 namespace OroAcademy\Bundle\IssueTrackerBundle\Form\Type;
 
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class IssueType extends AbstractType
 {
@@ -16,8 +18,16 @@ class IssueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('summary')
-            ->add('description')
+            ->add('summary', null, [
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
+            ->add('description', null, [
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
             ->add('priority', 'translatable_entity', [
                 'label' => 'oro_academy.entity.issue.priority.label',
                 'class' => 'OroAcademyIssueTrackerBundle:IssuePriority',
@@ -50,7 +60,8 @@ class IssueType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'OroAcademy\Bundle\IssueTrackerbundle\Entity\Issue'
+            'data_class' => 'OroAcademy\Bundle\IssueTrackerbundle\Entity\Issue',
+            'csrf_protection' => false
         ]);
     }
 
