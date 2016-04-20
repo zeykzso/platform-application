@@ -4,6 +4,8 @@ namespace OroAcademy\Bundle\IssueTrackerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class IssueType extends AbstractType
@@ -32,17 +34,14 @@ class IssueType extends AbstractType
                 array(
                     'label' => 'oro.tag.entity_plural_label'
                 )
-            );
-
-        $issue = $options['data'];
-        if (!$issue->getParent()) {
-            $builder->add('type', 'translatable_entity', [
+            )
+            ->add('type', 'translatable_entity', [
                 'label' => 'oro_academy.entity.issue.type.label',
                 'class' => 'OroAcademyIssueTrackerBundle:IssueType',
                 'property' => 'name',
                 'required' => true
             ]);
-        }
+
     }
 
     /**

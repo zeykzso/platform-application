@@ -1,4 +1,6 @@
 oro_academy:
+    controller:
+        issue_saved: The issue was successfully saved
     menu:
         issue_main: Issues
         issue_index: All issues

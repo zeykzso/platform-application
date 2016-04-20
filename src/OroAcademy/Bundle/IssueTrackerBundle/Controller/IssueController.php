@@ -110,38 +110,38 @@ class IssueController extends Controller
      */
     protected function update(Issue $issue, Request $request)
     {
-        $form = $this->get('form.factory')->create('oro_academy_issue', $issue);
-        $form->handleRequest($request);
-
-        $em = $this->get('doctrine.orm.entity_manager');
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if (null == $issue->getStatus()) {
-                $openStatus = $em->getRepository('OroAcademyIssueTrackerBundle:IssueStatus')
-                    ->findOneByName(IssueStatus::STATUS_OPEN);
-                $issue->setStatus($openStatus);
-            }
-            if (null == $issue->getReporter()) {
-                $issue->setReporter($this->getUser());
-            }
-            $em->persist($issue);
-            $em->flush();
-
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                array(
-                    'route' => 'oro_academy.issue_update',
-                    'parameters' => array('id' => $issue->getId()),
-                ),
-                array('route' => 'oro_academy.issue_index'),
-                $issue
-            );
+        $form = $this->get('oro_academy.form.issue');
+        $handler = $this->get('oro_academy.form.handler.issue');
+        $handler->setDefaults($issue, $this->getUser());
+        if ($userId = $request->query->get('entityId')) {
+            $handler->setAssignee($issue, $userId);
         }
 
-        return array(
-            'entity' => $issue,
-            'priorities' => $em->getRepository('OroAcademyIssueTrackerBundle:IssuePriority')->findAll(),
-            'assignees' => $em->getRepository('OroUserBundle:User')->findAll(),
-            'form' => $form->createView(),
+        $response = $this->get('oro_form.model.update_handler')->handleUpdate(
+            $issue,
+            $form,
+            function (Issue $issue) {
+                return [
+                    'route' => 'oro_academy.issue_update',
+                    'parameters' => array('id' => $issue->getId())
+                ];
+            },
+            function (Issue $issue) {
+                return [
+                    'route' => 'oro_academy.issue_view',
+                    'parameters' => array('id' => $issue->getId())
+                ];
+            },
+            $this->get('translator')->trans('oro_academy.controller.issue_saved'),
+            $this->get('oro_academy.form.handler.issue')
         );
+
+        if (is_array($response)) {
+            $em = $this->get('doctrine.orm.entity_manager');
+            $response['priorities'] = $em->getRepository('OroAcademyIssueTrackerBundle:IssuePriority')->findAll();
+            $response['assignees'] = $em->getRepository('OroUserBundle:User')->findAll();
+        }
+
+        return $response;
     }
 }
