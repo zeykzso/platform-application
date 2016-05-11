@@ -1,0 +1,4 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+<h5 style="padding-left: 25px">{{ 'oro_academy.entity.issue.issues_where_collaborator'|trans }}</h5>
+{{ dataGrid.renderGrid('dashboard-recent-issues-grid') }}

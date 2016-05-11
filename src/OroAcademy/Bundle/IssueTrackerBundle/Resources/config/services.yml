@@ -1,0 +1,15 @@
+parameters:
+    oro_academy.issue.entity.class: OroAcademy\Bundle\IssueTrackerBundle\Entity\Issue
+
+services:
+    oro_academy.issue_manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - OroAcademy\Bundle\IssueTrackerBundle\Entity\Issue
+            - "@doctrine.orm.entity_manager"
+
+    oro_academy.subscriber.note:
+        class: OroAcademy\Bundle\IssueTrackerBundle\EventListener\AddNoteSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }

@@ -1,0 +1,19 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block navButtons %}
+    {% if resource_granted('oro_academy.issue_view') %}
+        <div class="btn-group">
+            {{ UI.addButton({
+                'path': path('oro_academy.issue_create'),
+                'entity_label': 'oro_academy.entity.issue.label'|trans
+            }) }}
+        </div>
+    {% endif %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        entity_class: entity_class,
+        exportProcessor: 'oro_academy_issue_export',
+        importProcessor: 'oro_academy_issue_import',
+        dataGridName: gridName
+    } %}
+{% endblock %}

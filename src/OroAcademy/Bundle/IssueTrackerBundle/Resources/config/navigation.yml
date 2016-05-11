@@ -1,0 +1,18 @@
+oro_menu_config:
+    items:
+        issues:
+            label: oro_academy.menu.issue_main
+            uri: '#'
+        issue_index:
+            label: oro_academy.menu.issue_index
+            route: oro_academy.issue_index
+        issue_create:
+            label: oro_academy.menu.issue_create
+            route: oro_academy.issue_create
+    tree:
+        application_menu:
+            children:
+                issues:
+                    children:
+                        issue_index: ~
+                        issue_create: ~

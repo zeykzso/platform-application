@@ -1,0 +1,27 @@
+parameters:
+    oro_academy.form.handler.issue.class: OroAcademy\Bundle\IssueTrackerBundle\Form\Handler\IssueHandler
+    oro_academy.form.type.issue.class: OroAcademy\Bundle\IssueTrackerBundle\Form\Type\IssueType
+
+services:
+    oro_academy.form.issue:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: [oro_academy_issue_form, oro_academy_issue]
+
+    oro_academy.form.handler.issue:
+        class: %oro_academy.form.handler.issue.class%
+        scope: request
+        arguments:
+            - @oro_academy.form.issue
+            - @request
+            - @doctrine.orm.entity_manager
+
+    oro_academy.form.type.issue:
+        class: "%oro_academy.form.type.issue.class%"
+        arguments:
+            - @router
+            - @oro_locale.formatter.name
+            - @oro_security.security_facade
+        tags:
+            - { name: form.type, alias: oro_academy_issue }

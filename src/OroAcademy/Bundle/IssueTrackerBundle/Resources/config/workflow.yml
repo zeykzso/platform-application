@@ -1,0 +1,116 @@
+workflows:
+    issue_status_workflow:
+        label: 'Issue status workflow'
+        entity: OroAcademy\Bundle\IssueTrackerBundle\Entity\Issue
+        entity_attribute: issue
+        start_step: open
+        steps:
+            open:
+                label: 'Open'
+                order: 1
+                allowed_transitions:
+                    - start_progress
+                    - resolve
+                    - close
+            in_progress:
+                label: 'In progress'
+                order: 2
+                allowed_transitions:
+                    - stop_progress
+                    - resolve
+                    - close
+            closed:
+                label: 'Closed'
+                order: 3
+                allowed_transitions:
+                    - reopen
+            resolved:
+                label: 'Resolved'
+                order: 4
+                allowed_transitions:
+                    - close
+                    - reopen
+            reopened:
+                label: 'Reopened'
+                order: 5
+                allowed_transitions:
+                    - start_progress
+        attributes:
+            resolution:
+                label: 'Resolution'
+                property_path: issue.resolution
+        transitions:
+            start_progress:
+                label: "Start progress"
+                step_to: in_progress
+                transition_definition: start_progress_definition
+            resolve:
+                label: "Resolve"
+                step_to: resolved
+                transition_definition: resolve_definition
+                form_options:
+                    attribute_fields:
+                        resolution:
+                            form_type: entity
+                            options:
+                                class: OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueResolution
+                                required: true
+                                constraints:
+                                    - NotBlank: ~
+            close:
+                label: "Close"
+                step_to: closed
+                transition_definition: close_definition
+                form_options:
+                    attribute_fields:
+                        resolution:
+                            form_type: entity
+                            options:
+                                class: OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueResolution
+                                required: true
+                                constraints:
+                                    - NotBlank: ~
+            stop_progress:
+                label: "Stop progress"
+                step_to: open
+                transition_definition: stop_progress_definition
+            reopen:
+                label: "Reopen"
+                step_to: reopened
+                transition_definition: reopen_definition
+        transition_definitions:
+            start_progress_definition:
+                post_actions:
+                    - @find_entity: # Set call status to in_progress
+                        class: OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueStatus
+                        where:
+                            name: 'in_progress'
+                        attribute: $issue.status
+            resolve_definition:
+                post_actions:
+                    - @find_entity: # Set call status to in_progress
+                        class: OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueStatus
+                        where:
+                            name: 'resolved'
+                        attribute: $issue.status
+            close_definition:
+                post_actions:
+                    - @find_entity: # Set call status to in_progress
+                        class: OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueStatus
+                        where:
+                            name: 'closed'
+                        attribute: $issue.status
+            stop_progress_definition:
+                post_actions:
+                    - @find_entity: # Set call status to in_progress
+                        class: OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueStatus
+                        where:
+                            name: 'open'
+                        attribute: $issue.status
+            reopen_definition:
+                post_actions:
+                    - @find_entity: # Set call status to in_progress
+                        class: OroAcademy\Bundle\IssueTrackerBundle\Entity\IssueStatus
+                        where:
+                            name: 'reopened'
+                        attribute: $issue.status

@@ -1,0 +1,28 @@
+{% import 'OroUIBundle::macros.html.twig'  as UI %}
+
+{% if entity is defined %}
+
+    {{ UI.clientButton({
+        'dataUrl': path('oro_academy.issue_create', oro_action_params(entity)),
+        'aCss': 'no-hash',
+        'dataId': entity.id,
+        'label': 'oro_academy.menu.issue_create'|trans,
+        'title': 'oro_academy.menu.issue_create'|trans,
+        'widget' : {
+            'type' : 'dialog',
+            'multiple' : true,
+            'options' : {
+                'alias': 'issue-dialog',
+                'dialogOptions' : {
+                    'title' : 'oro_academy.menu.issue_create'|trans,
+                    'allowMaximize': true,
+                    'allowMinimize': true,
+                    'dblclick': 'maximize',
+                    'maximizedHeightDecreaseBy': 'minimize-bar',
+                    'width': 1000
+                }
+            }
+        }
+    }) }}
+
+{% endif %}
